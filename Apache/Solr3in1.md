@@ -420,7 +420,7 @@ vi /opt/solr/server/contexts/solr-jetty-context.xml
     <Arg>
       <New class="org.apache.commons.dbcp.BasicDataSource">
         <Set name="driverClassName">oracle.jdbc.driver.OracleDriver</Set>
-        <Set name="url">jdbc:oracle:thin:@//dragon.corp.toronto.ca:1521/NMISDV</Set>
+        <Set name="url">jdbc:oracle:thin:@//dragon.corp.mycompany.com:1521/NMISDV</Set>
         <Set name="username">nmis_user</Set>
         <Set name="password"><AskDBA></Set>
       </New>
@@ -432,7 +432,7 @@ vi /opt/solr/server/contexts/solr-jetty-context.xml
     <Arg>
       <New class="org.apache.commons.dbcp.BasicDataSource">
         <Set name="driverClassName">oracle.jdbc.driver.OracleDriver</Set>
-        <Set name="url">jdbc:oracle:thin:@//dragon.corp.toronto.ca:1521/NMISDV</Set>
+        <Set name="url">jdbc:oracle:thin:@//dragon.corp.mycompany.com:1521/NMISDV</Set>
         <Set name="username">nmis_web</Set>
         <Set name="password"><AskDBA></Set>
       </New>

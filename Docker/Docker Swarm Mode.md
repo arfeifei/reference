@@ -3,12 +3,12 @@ Docker Swarm Mode
 ![docker-swarm-1](/blog/content/images/2017/10/docker-swarm-1.png)
 ## Command
 > docker commonly used command in swarm mode
-###1.Start & join Swarm
+### 1.Start & join Swarm
 ```
 docker swarm init
 docker swarm join-token manager
 ```
-###2.Service operation
+### 2.Service operation
 ```
   create      Create a new service
   inspect     Display detailed information on one or more services
@@ -23,7 +23,7 @@ docker swarm join-token manager
 ## Run Visualizer GUI on swarm mode
 > http://mydockerhost:9000/
 >
-###1. Create service name as ***visualizer***
+### 1. Create service name as ***visualizer***
 ```
 docker service create \
   --name=visualizer \
@@ -32,16 +32,16 @@ docker service create \
   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
   dockersamples/visualizer
 ```
-###2. Scale service ***visualizer*** as ***3*** replica
+### 2. Scale service ***visualizer*** as ***3*** replica
 ```
 docker service scale visualizer=3
 ```
 ![docker_visualizer](/blog/content/images/2017/10/docker_visualizer.jpg)
-###3. Check ***visualizer*** run time
+### 3. Check ***visualizer*** run time
 ```
 docker service ps visualizer
 ```
-###3. Delete/stop ***visualizer*** service
+### 3. Delete/stop ***visualizer*** service
 ```
 docker service rm visualizer
 ```

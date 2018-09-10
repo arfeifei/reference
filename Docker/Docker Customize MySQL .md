@@ -1,10 +1,10 @@
-DOCKER – HOW TO CREATE A CUSTOM DATABASE FROM DOCKER MYSQL IMAGE
+# DOCKER – HOW TO CREATE A CUSTOM DATABASE FROM DOCKER MYSQL IMAGE
 
-###Problem:
+### Problem:
 
 I use the official mysql base image from Docker Hub to create mysql database. But by default it only creates one database. I want to create another database.
 
-###Solution:
+### Solution:
 
 mysql image actually provides a way to do this. Reference the official doc: https://github.com/docker-library/docs/tree/master/mysql  Under “Initializing a fresh instance” section.
 

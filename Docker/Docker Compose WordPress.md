@@ -1,4 +1,4 @@
-Quickstart: Compose and WordPress
+# Quickstart: Compose and WordPress
 
 You can use Docker Compose to easily run WordPress in an isolated environment
 built with Docker containers. This quick-start guide demonstrates how to use

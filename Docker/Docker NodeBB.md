@@ -9,12 +9,12 @@ Here is the complete source code about how to setup and use it in my github repo
 
 Enjoy!
 
-##Some hiccups when bumped:
+## Some hiccups when bumped:
 >
-####1.docker-compose.yml volumes
+#### 1.docker-compose.yml volumes
 Need set volumes to local directory otherwise the user data will be gone when execute ***docker-compose rm -f*** remove old container 
 
-####2.NodeBB config.json
+#### 2.NodeBB config.json
 >1.url need match the site name
 2.socket.io need allow all the origins
 ```
@@ -27,7 +27,7 @@ Need set volumes to local directory otherwise the user data will be gone when ex
 } 
         
 ```
-####3.wordpress url must match domain path
+#### 3.wordpress url must match domain path
 Nginx.conf proxy_pass http://arfeifei.no-ip.biz to http://wordpress-app:8000.
 login to wordpress by http://arfeifei.no-ip.biz/wp-login.php 
 >Change wordpress (URL) & site (URL) to http://arfeifei.no-ip.biz

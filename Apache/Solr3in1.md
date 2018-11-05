@@ -1,18 +1,22 @@
 # Install Apache Solr on One Server with Multiple Instance
 ## Prepare source
-```
+
+``` sh
 wget http://apache.forsale.plus/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz
 
 wget http://apache.forsale.plus/lucene/solr/7.1.0/solr-7.1.0.tgz
 ```
+
 ## Generate Self-signed certificate [Reference](https://lucene.apache.org/solr/guide/7_1/enabling-ssl.html)
-> Replace solr-dv.mycompany.com with the real hostname so does to IP address even alias
+Replace solr-dv.mycompany.com with the real hostname so does to IP address even alias
 
 ``` sh
 keytool -genkeypair -alias solr-ssl -keyalg RSA -keysize 2048 -keypass secret -storepass secret -validity 9999 -keystore solr-ssl.keystore.jks -ext SAN=DNS:solr-dv.mycompany.com,DNS:localhost,IP:172.21.163.164,IP:127.0.0.1 -dname "CN=solr-dv.mycompany.com, OU=Department, O=Company, L=Toronto, ST=Ontario, C=Canada"
 ```
+
 ## Install Zookeeper
-```
+
+```sh
 tar xfvz zookeeper-3.4.10.tar.gz
 sudo mv zookeeper-3.4.10 /opt/zookeeper
 cd /var/lib
@@ -22,9 +26,10 @@ cp zoo_sample.cfg zoo.cfg
 vi zoo.cfg
 # dataDir=/var/lib/zookeeper
 ```
->zookeeper as standlone mode
 
-```
+zookeeper as standlone mode
+
+```sh
 sudo chown -R solr:solr /var/lib/zookeeper/
 echo 1 > /var/lib/zookeeper/myid
 cd /var/lib/zookeeper/
@@ -32,7 +37,9 @@ cd /var/lib/zookeeper/
 /opt/zookeeper/bin/zkServer.sh status
 cd ~/downloads/
 ```
+
 ## Install Solr
+
 ``` sh
 tar xzf solr-7.1.0.tgz  solr-7.1.0/bin/install_solr_service.sh --strip-components=2
 sudo bash ./install_solr_service.sh solr-7.1.0.tgz -s solr1 -p 8983
@@ -52,8 +59,10 @@ sudo chown -R solr:solr /opt/solr-7.1.0
 # put self-signed certificate on solr server etc
 cp ~/solr-ssl.keystore.jks /opt/solr/server/etc
 ```
+
 ## Setup firewall
-```
+
+```sh
 # for zookeeper
 sudo firewall-cmd --zone=public --add-port=2181/tcp --permanent
 # for solr nodes
@@ -67,14 +76,16 @@ sudo service solr1 stop
 sudo service solr2 stop 
 sudo service solr3 stop
 ```
+
 ## Configure Solr.in.sh (for each instance)
+
 ``` sh
 sudo vi /etc/default/solr1.in.sh
 ```
-> add following content
 
-```
-#SOLR_TIMEZONE="date '+%Z'"
+Add following content
+
+```sh
 SOLR_TIMEZONE="America/New_York"
 SOLR_PORT=8983
 SOLR_HEAP="1g"
@@ -88,13 +99,14 @@ SOLR_SSL_NEED_CLIENT_AUTH=false
 SOLR_SSL_WANT_CLIENT_AUTH=false
 ZK_HOST="localhost:2181"
 ```
-```
+
+```sh
 sudo vi /etc/default/solr2.in.sh
 ```
-> add following content
 
-```
-#SOLR_TIMEZONE="date '+%Z'"
+Add following content
+
+```sh
 SOLR_TIMEZONE="America/New_York"
 SOLR_PORT=7574
 SOLR_HEAP="1g"
@@ -108,13 +120,14 @@ SOLR_SSL_NEED_CLIENT_AUTH=false
 SOLR_SSL_WANT_CLIENT_AUTH=false
 ZK_HOST="localhost:2181"
 ```
-```
+
+```sh
 sudo vi /etc/default/solr3.in.sh
 ```
-> add following content
 
-```
-#SOLR_TIMEZONE="date '+%Z'"
+Add following content
+
+```sh
 SOLR_TIMEZONE="America/New_York"
 SOLR_PORT=8984
 SOLR_HEAP="1g"
@@ -128,21 +141,26 @@ SOLR_SSL_NEED_CLIENT_AUTH=false
 SOLR_SSL_WANT_CLIENT_AUTH=false
 ZK_HOST="localhost:2181"
 ```
->Remove default solr.xml parepare for zookeeper
 
-```
+Remove default solr.xml parepare for zookeeper
+
+```sh
 mv /var/solr1/data/solr.xml  /var/solr1/data/solr.xml.old
 mv /var/solr2/data/solr.xml  /var/solr2/data/solr.xml.old
 mv /var/solr3/data/solr.xml  /var/solr3/data/solr.xml.old
 ```
-## Add sharedLib 
-```
+
+## Add sharedLib
+
+```sh
 tar xvf opt.tar
 cd opt
 sudo mv shared-lib /opt
 sudo chown -R solr:solr /opt/shared-lib/
 ```
+
 ## Create business configsets
+
 ``` sh
 tar xvf configsets.tar
 cd /opt/solr/server/scripts/cloud-scripts
@@ -152,7 +170,8 @@ chmod 755 *.sh
 #Set all solr cluster use https insteadof http
 ./zkcli.sh -zkhost localhost:2181 -cmd clusterprop -name urlScheme -val https
 ```
->Example security.json content default solr admin as solr:SolrRocks
+
+Example security.json content default solr admin as solr:SolrRocks
 
 ``` json
 {
@@ -187,26 +206,30 @@ chmod 755 *.sh
   }
 }
 ```
->Upload public notice configuration set to zookeeper
 
-```
+Upload public notice configuration set to zookeeper
+
+```sh
 ./zkcli.sh -zkhost localhost:2181 -cmd upconfig -confdir ~/downloads/configsets/nm_configs/conf -confname nm_configs
 ./zkcli.sh -zkhost localhost:2181 -cmd upconfig -confdir ~/downloads/configsets/nmis_configs/conf -confname nmis_configs
 ```
-> Remove old config can be done by
 
-```
+Remove old config can be done by
+
+```sh
 ./zkcli.sh -cmd clear -z "localhost:2181" /configs/nm_configs
 ./zkcli.sh -cmd clear -z "localhost:2181" /configs/nmis_configs
 ```
->Restart solr
 
-```
+Restart solr
+
+```sh
 sudo service solr1 start
-sudo service solr2 start 
+sudo service solr2 start
 sudo service solr3 start
 ```
->Create public_notice index collection
+
+Create public_notice index collection
 
 ```
 https://solr-dv.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nm&numShards=1&replicationFactor=3&collection.configName=nm_configs&maxShardsPerNode=1
@@ -274,25 +297,33 @@ fi
 
 exit 0
 ```
->Save the file make it load by etc/init.d
 
-```
+Save the file make it load by etc/init.d
+
+```sh
 chmod 744 zookeeper
 ```
->Modify /etc/init.d/solr1(2,3) add zookeeper
 
-```
+Modify /etc/init.d/solr1(2,3) add zookeeper
+
+``` sh
+# chkconfig: 2345 90
+# description: Apache Solr1 Service
+
+### BEGIN INIT INFO
 # Required-Start:    $remote_fs $syslog zookeeper
 ```
->Make zookeeper start on boot
 
-```
+Make zookeeper start on boot
+
+```sh
 sudo /sbin/chkconfig --add zookeeper
 sudo /sbin/chkconfig zookeeper on
 ```
 
 ## Rule-Based Authorization
-> Create 2 business users for public notice [Reference](https://lucene.apache.org/solr/guide/7_1/basic-authentication-plugin.html)
+
+Create 2 business users for public notice [Reference](https://lucene.apache.org/solr/guide/7_1/basic-authentication-plugin.html)
 
 ``` sh
 curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983/solr/admin/authentication -H 'Content-type:application/json' -d '{
@@ -300,7 +331,8 @@ curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983
     "nm":"toronto"}
 }'
 ```
-> Create role for 2 business collections [Reference](https://lucene.apache.org/solr/guide/7_1/rule-based-authorization-plugin.html)
+
+Create role for 2 business collections [Reference](https://lucene.apache.org/solr/guide/7_1/rule-based-authorization-plugin.html)
 
 ``` sh
 curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983/solr/admin/authorization -H 'Content-type:application/json' -d '{
@@ -308,7 +340,8 @@ curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983
   "set-permission": {"collection": "nm","role": ["nmis-role","nm-role"]}
 }'
 ```
-> Assign proper role to user
+
+Assign proper role to user
 
 ``` sh
 curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983/solr/admin/authorization -H 'Content-type:application/json' -d '{
@@ -317,12 +350,14 @@ curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983
     "nm": "nm-role"}
 }'
 ```
-> Download the security.json from zookeeper for reference
+
+Download the security.json from zookeeper for reference
 
 ``` sh
 /opt/solr/server/scripts/cloud-scripts/zkcli.sh -zkhost localhost:2181 -cmd getfile /security.json ./security.json
 ```
-> security.json
+
+security.json
 
 ``` json
 {
@@ -377,9 +412,10 @@ curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983
     "":{"v":24}}}
 
 ```
+
 ## extra step for Solr 7.1.0 (optional)
 
-```
+```sh
 curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983/solr/nmis/config -H 'Content-type:application/json' -d'{
     "set-property" : {"requestDispatcher.requestParsers.enableRemoteStreaming":true},
     "set-property" : {"requestDispatcher.requestParsers.enableStreamBody":true}
@@ -393,7 +429,7 @@ curl --user solr:SolrRocks --noproxy localhost --insecure https://localhost:8983
 
 ## Config Solr Jetty JNDI (optional but recommended)
 
-> Get extra library
+Get extra library
 
 ``` sh
 cd /opt/solr/server/lib
@@ -406,12 +442,14 @@ wget http://central.maven.org/maven2/commons-pool/commons-pool/1.6/commons-pool-
 
 cp /opt/share-lib/* /opt/solr/server/lib/ext/
 ```
-> Modify contexts/solr-jetty-context.xml
 
-```
+Modify contexts/solr-jetty-context.xml
+
+```sh
 vi /opt/solr/server/contexts/solr-jetty-context.xml
 ```
-> Add the following JNDI datasource between &lt;Configure&gt; &lt;/Configure&gt;
+
+Add the following JNDI datasource between &lt;Configure&gt; &lt;/Configure&gt;
 
 ``` xml
   <New id="nmisDataSource" class="org.eclipse.jetty.plus.jndi.Resource">

@@ -1,6 +1,7 @@
 # Apache Kafka Installtion
 
 ## Installation
+
 ```sh
 cd /opt
 wget http://apache-mirror.rbc.ru/pub/apache/kafka/0.10.1.0/kafka_2.11-0.10.1.0.tgz
@@ -9,10 +10,13 @@ ln -s kafka_2.11-0.10.1.0/ kafka
 ```
 
 ## Config ZooKeeper service for Kafaka
+
 ```sh
 vi /etc/systemd/system/kafka-zookeeper.service
 ```
+
 **kafka-zookeeper.service**
+
 ```ini
 [Unit]
 Description=Apache Zookeeper server (Kafka)
@@ -31,11 +35,15 @@ ExecStop=/opt/kafka/bin/zookeeper-server-stop.sh
 [Install]
 WantedBy=multi-user.target
 ```
+
 ## Config Kafaka service
+
 ```sh
 vi /etc/systemd/system/kafka.service
 ```
+
 **kafka.service**
+
 ```ini
 [Unit]
 Description=Apache Kafka server (broker)
@@ -54,16 +62,22 @@ ExecStop=/opt/kafka/bin/kafka-server-stop.sh
 [Install]
 WantedBy=multi-user.target
 ```
+
 ## Config Kafaka server on each node
+
 ```sh
 vi kafka/config/server.properties
 ```
-**Edit listeners properties**
+
+Edit those properties
+
 ```ini
+zookeeper.connect=zkhost:2181
 listeners=PLAINTEXT://kafakaNodeServer:9092
 ```
 
 ## Config linux Bootup services
+
 ```sh
 systemctl daemon-reload
 systemctl start kafka-zookeeper.service

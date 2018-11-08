@@ -181,12 +181,12 @@ Restart Solr
 sudo service solr start
 ```
 
-Create public_notice index collection on **ONLY ONE** node
+Create public_notice index collection on **ONLY ONE** node **async id should be unique**
 
 ```sh
 https://solr-1.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nm&numShards=1&replicationFactor=3&collection.configName=nm_configs&maxShardsPerNode=1&async=1000
 
-https://solr-1.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nmis&numShards=1&replicationFactor=3&collection.configName=nmis_configs&maxShardsPerNode=1&async=1000
+https://solr-1.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nmis&numShards=1&replicationFactor=3&collection.configName=nmis_configs&maxShardsPerNode=1&async=1001
 ```
 
 ## Make zookeeper as Service

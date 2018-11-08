@@ -232,9 +232,9 @@ sudo service solr3 start
 Create public_notice index collection
 
 ```
-https://solr-dv.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nm&numShards=1&replicationFactor=3&collection.configName=nm_configs&maxShardsPerNode=1
+https://solr-dv.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nm&numShards=1&replicationFactor=3&collection.configName=nm_configs&maxShardsPerNode=1&async=1000
 
-https://solr-dv.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nmis&numShards=1&replicationFactor=3&collection.configName=nmis_configs&maxShardsPerNode=1
+https://solr-dv.mycompany.com:8983/solr/admin/collections?action=CREATE&name=nmis&numShards=1&replicationFactor=3&collection.configName=nmis_configs&maxShardsPerNode=1&async=1000
 ```
 ## Make zookeeper as Service
 ```

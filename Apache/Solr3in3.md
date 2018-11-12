@@ -95,6 +95,8 @@ SOLR_SSL_TRUST_STORE_TYPE=JKS
 SOLR_SSL_NEED_CLIENT_AUTH=false
 SOLR_SSL_WANT_CLIENT_AUTH=false
 ZK_HOST="solr-1.mycompany.com:2181,solr-2.mycompany.com:2181,solr-3.mycompany.com:2181"
+# increase node pkiauth ttl from default 10 seconds to 60 seconds when clock out of synchronized
+SOLR_OPTS="$SOLR_OPTS -Dpkiauth.ttl=60000"
 ```
 
 Remove default solr.xml parepare for zookeeper

@@ -2,7 +2,7 @@
 
 Tested on CentOS 8
 
-From [https://docs.docker.com/network/proxy/](https://docs.docker.com/networkproxy)
+From [https://docs.docker.com/network/proxy/](https://docs.docker.com/network/proxy/)
 
 ## 1. Docker Client Proxy Setting:
 

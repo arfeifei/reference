@@ -273,3 +273,10 @@ You have successfully installed Minecraft server on your Raspberry Pi. Please no
 If you hit a problem or have feedback, leave a comment below.
 
 [java](/tags/java/) [minecraft](/tags/minecraft/) [raspberry pi](/tags/raspberry-pi/)
+
+
+
+
+
+[Minecraft Pocket Edition](#https://github.com/CloudburstMC/Nukkit)
+-------------------------------------------------------------------

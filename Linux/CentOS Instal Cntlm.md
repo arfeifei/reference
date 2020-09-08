@@ -27,6 +27,10 @@
    $ mkdir /var/run/cntlm
    $ chgrp cntlm /var/run/cntlm/
    $ chmod g+w /var/run/cntlm/
+   
+   need create /usr/lib/tmpfiles.d/cntlm.conf:
+
+   d /run/cntlm   700 cntlm cntlm
 
 8) Enable CNTLM to start automatically:
     $ chkconfig cntlmd on  (systemctl enable cntlmd)

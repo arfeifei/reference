@@ -25,6 +25,8 @@ sudo mkdir zookeeper
 cd /opt/zookeeper/conf
 cp zoo_sample.cfg zoo.cfg
 vi zoo.cfg
+# dataDir=/var/lib/zookeeper
+# 4lw.commands.whitelist=mntr,conf,ruok
 ```
 
 change the following config

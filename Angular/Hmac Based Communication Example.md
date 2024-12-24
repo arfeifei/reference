@@ -46,9 +46,10 @@ Sure! Below is an example of how you can set up end-to-end communication between
 
 ### Frontend (Angular)
 
-1. **Install Axios**: First, ensure you have Axios installed for making HTTP requests.
+1. **Install crypto-js**: First, ensure you have crypto-js installed for Encrypting Decrypting Data.
    ```bash
-   npm install axios
+   npm install crypto-js
+   npm i --save-dev @types/crypto-js
    ```
 
 2. **Create a Service to Handle Requests**:
